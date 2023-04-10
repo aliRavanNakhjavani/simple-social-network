@@ -86,4 +86,24 @@ public class User {
     )
     private Set<User> requestReceiver = new HashSet<>();
 
+    public void addFollower(User user){
+        followers.add(user);
+        user.getFollowing().add(this);
+    }
+
+    public void removeFollower(User user){
+        followers.remove(user);
+        user.getFollowing().remove(this);
+    }
+
+    public void addRequest(User user){
+        requestReceiver.add(user);
+        user.getRequestSender().add(this);
+    }
+
+    public void removeRequest(User user){
+        requestReceiver.remove(user);
+        user.getRequestSender().remove(this);
+    }
+
 }
