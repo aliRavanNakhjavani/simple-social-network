@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +49,11 @@ public class User {
             message = "Wrong Pattern For Password")
     private String password;
 
+    @Column(nullable = false)
+    private LocalDateTime registerDate;
+
+    private LocalDateTime loginDate;
+
     @ManyToMany(
             mappedBy = "following",
             cascade = CascadeType.ALL,
@@ -86,24 +92,36 @@ public class User {
     )
     private Set<User> requestReceiver = new HashSet<>();
 
-    public void addFollower(User user){
-        followers.add(user);
-        user.getFollowing().add(this);
-    }
-
     public void removeFollower(User user){
         followers.remove(user);
         user.getFollowing().remove(this);
     }
 
-    public void addRequest(User user){
+    public void sendRequest(User user){
         requestReceiver.add(user);
         user.getRequestSender().add(this);
     }
 
-    public void removeRequest(User user){
+    public void unSendRequest(User user){
         requestReceiver.remove(user);
         user.getRequestSender().remove(this);
+    }
+
+    public void removeFollowing(User user){
+        following.remove(user);
+        user.getFollowers().remove(this);
+    }
+
+    public void confirmRequest(User user){
+        requestSender.remove(user);
+        user.getRequestReceiver().remove(this);
+        followers.add(user);
+        user.getFollowing().add(this);
+    }
+
+    public void rejectRequest(User user){
+        requestSender.remove(user);
+        user.getRequestReceiver().remove(this);
     }
 
 }
