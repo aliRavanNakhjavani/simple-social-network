@@ -1,5 +1,6 @@
 package com.navoshgaran.socialnetwork.mapper;
 
+import com.navoshgaran.socialnetwork.dto.GetUserDto;
 import com.navoshgaran.socialnetwork.dto.LoginUserDto;
 import com.navoshgaran.socialnetwork.dto.RegisterUserDto;
 import com.navoshgaran.socialnetwork.entity.User;
@@ -18,4 +19,6 @@ public interface UserMapper {
     User registerUserDtoToUser(RegisterUserDto registerUserDto);
 
     User loginUserDtoToUser(LoginUserDto loginUserDto);
+
+    GetUserDto UserToGetUserDto(User user);
 }
