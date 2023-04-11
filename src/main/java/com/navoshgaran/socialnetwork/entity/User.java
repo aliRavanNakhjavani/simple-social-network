@@ -67,8 +67,8 @@ public class User {
             fetch = FetchType.EAGER
     )
     @JoinTable(name="friendship",
-            joinColumns={@JoinColumn(name="user_id")},
-            inverseJoinColumns={@JoinColumn(name="follower_id")},
+            joinColumns={@JoinColumn(name="follower_id")},
+            inverseJoinColumns={@JoinColumn(name="user_id")},
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "follower_id"})}
     )
     private Set<User> following = new HashSet<>();

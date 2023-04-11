@@ -51,4 +51,14 @@ public class UserController {
     public List<GetUserDto> seeReceivedRequests(@PathVariable String clientUsername){
         return userService.seeReceivedRequests(clientUsername);
     }
+
+    @PostMapping("/confirm-request")
+    public void confirmRequest(@RequestBody RequestDto requestDto){
+        userService.confirmRequest(requestDto.getClientUsername(), requestDto.getTargetUsername());
+    }
+
+    @PostMapping("/reject-request")
+    public void rejectRequest(@RequestBody RequestDto requestDto){
+        userService.rejectRequest(requestDto.getClientUsername(), requestDto.getTargetUsername());
+    }
 }

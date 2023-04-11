@@ -100,12 +100,18 @@ public class UserService {
         if (clientUser.getRequestReceiver().contains(targetUser)) {
             throw new DuplicateException("Request Already Sended!");
         }
+        if (clientUser.getFollowing().contains(targetUser)){
+            throw new DuplicateException("You Are Following him Already");
+        }
         clientUser.sendRequest(targetUser);
         saveOrUpdate(clientUser);
         saveOrUpdate(targetUser);
     }
 
     public List<GetUserDto> seeSendedRequests(String clientUsername) {
+        if (!isValidLoginByUsername(clientUsername)){
+            throw new ExpiredLoginException("Login First!");
+        }
         Set<User> requestReceiver = getUserByUsername(clientUsername).getRequestReceiver();
         List<GetUserDto> sendedRequests = new ArrayList<>();
         for (User user: requestReceiver) {
@@ -115,11 +121,42 @@ public class UserService {
     }
 
     public List<GetUserDto> seeReceivedRequests(String clientUsername) {
+        if (!isValidLoginByUsername(clientUsername)){
+            throw new ExpiredLoginException("Login First!");
+        }
         Set<User> requestSender = getUserByUsername(clientUsername).getRequestSender();
         List<GetUserDto> receivedRequests = new ArrayList<>();
         for (User user: requestSender) {
             receivedRequests.add(UserMapper.INSTANCE.UserToGetUserDto(user));
         }
         return receivedRequests;
+    }
+
+    public void confirmRequest(String clientUsername, String targetUsername) {
+        if (!isValidLoginByUsername(clientUsername)){
+            throw new ExpiredLoginException("Login First!");
+        }
+        User clientUser = getUserByUsername(clientUsername);
+        User targetUser = getUserByUsername(targetUsername);
+        if (!clientUser.getRequestSender().contains(targetUser)){
+            throw new InvalidInputException("There is No Request to Confirm");
+        }
+        clientUser.confirmRequest(targetUser);
+        saveOrUpdate(clientUser);
+        saveOrUpdate(targetUser);
+    }
+
+    public void rejectRequest(String clientUsername, String targetUsername) {
+        if (!isValidLoginByUsername(clientUsername)){
+            throw new ExpiredLoginException("Login First!");
+        }
+        User clientUser = getUserByUsername(clientUsername);
+        User targetUser = getUserByUsername(targetUsername);
+        if (!clientUser.getRequestSender().contains(targetUser)){
+            throw new InvalidInputException("There is No Request to reject");
+        }
+        clientUser.rejectRequest(targetUser);
+        saveOrUpdate(clientUser);
+        saveOrUpdate(targetUser);
     }
 }
