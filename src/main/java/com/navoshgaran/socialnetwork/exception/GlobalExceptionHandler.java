@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    private ResponseEntity<ExceptionDto> notFoundException(NotFoundException e) {
+    private ResponseEntity<ExceptionDto> notFoundExceptionHandler(NotFoundException e) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         ExceptionDto exception = ExceptionDto.builder()
                 .timeStamp(LocalDateTime.now().toString())
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidInputException.class)
-    private ResponseEntity<ExceptionDto> invalidInputException(InvalidInputException e) {
+    private ResponseEntity<ExceptionDto> invalidInputExceptionHandler(InvalidInputException e) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         ExceptionDto exception = ExceptionDto.builder()
                 .timeStamp(LocalDateTime.now().toString())
@@ -65,6 +65,19 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(httpStatus).body(exception);
     }
+
+    @ExceptionHandler(ExpiredLoginException.class)
+    private ResponseEntity<ExceptionDto> ExpiredLoginExceptionHandler(ExpiredLoginException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        ExceptionDto exception = ExceptionDto.builder()
+                .timeStamp(LocalDateTime.now().toString())
+                .status(httpStatus.value())
+                .error(httpStatus.name())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(httpStatus).body(exception);
+    }
+
 
 
     
