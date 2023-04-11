@@ -1,5 +1,6 @@
 package com.navoshgaran.socialnetwork.controller;
 
+import com.navoshgaran.socialnetwork.dto.LoginUserDto;
 import com.navoshgaran.socialnetwork.dto.RegisterUserDto;
 import com.navoshgaran.socialnetwork.entity.User;
 import com.navoshgaran.socialnetwork.mapper.UserMapper;
@@ -22,5 +23,11 @@ public class UserController {
     public void userRegister(@Valid @RequestBody RegisterUserDto registerUserDto){
         User user = UserMapper.INSTANCE.registerUserDtoToUser(registerUserDto);
         userService.registerUser(user);
+    }
+
+    @PostMapping("/login")
+    public void userLogin(@Valid @RequestBody LoginUserDto loginUserDto){
+        User user = UserMapper.INSTANCE.loginUserDtoToUser(loginUserDto);
+        userService.loginUser(user);
     }
 }

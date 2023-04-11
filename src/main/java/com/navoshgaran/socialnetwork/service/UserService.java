@@ -2,6 +2,8 @@ package com.navoshgaran.socialnetwork.service;
 
 import com.navoshgaran.socialnetwork.entity.User;
 import com.navoshgaran.socialnetwork.exception.DuplicateException;
+import com.navoshgaran.socialnetwork.exception.InvalidInputException;
+import com.navoshgaran.socialnetwork.exception.NotFoundException;
 import com.navoshgaran.socialnetwork.exception.OperationException;
 import com.navoshgaran.socialnetwork.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
@@ -45,4 +47,25 @@ public class UserService {
         saveOrUpdate(user);
     }
 
+
+    public boolean isValidLogin(User user){
+        if (user.getLoginDate() != null){
+            return user.getLoginDate().isAfter(LocalDateTime.now());
+        } else {
+            return false;
+        }
+    }
+
+    public void loginUser(User user) {
+        User completedUser = userRepo.findByUsername(user.getUsername()).orElseThrow(
+                () -> new NotFoundException("There Is No User With username : " + user.getUsername()));
+        if (!completedUser.getPassword().equals(user.getPassword())){
+            throw new InvalidInputException("Wrong Password");
+        }
+        if (isValidLogin(completedUser)){
+            return;
+        }
+        completedUser.setLoginDate(LocalDateTime.now().plusDays(5));
+        saveOrUpdate(completedUser);
+    }
 }
