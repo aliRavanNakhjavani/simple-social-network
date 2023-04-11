@@ -54,6 +54,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(httpStatus).body(exception);
     }
 
+    @ExceptionHandler(InvalidInputException.class)
+    private ResponseEntity<ExceptionDto> invalidInputException(InvalidInputException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        ExceptionDto exception = ExceptionDto.builder()
+                .timeStamp(LocalDateTime.now().toString())
+                .status(httpStatus.value())
+                .error(httpStatus.name())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(httpStatus).body(exception);
+    }
+
 
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
