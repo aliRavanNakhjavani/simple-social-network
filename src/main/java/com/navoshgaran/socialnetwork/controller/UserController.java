@@ -46,4 +46,9 @@ public class UserController {
     public List<GetUserDto> seeSendedRequests(@PathVariable String clientUsername){
         return userService.seeSendedRequests(clientUsername);
     }
+
+    @GetMapping("/see-received-requests/{clientUsername}")
+    public List<GetUserDto> seeReceivedRequests(@PathVariable String clientUsername){
+        return userService.seeReceivedRequests(clientUsername);
+    }
 }

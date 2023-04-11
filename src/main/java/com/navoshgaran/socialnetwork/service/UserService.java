@@ -113,4 +113,13 @@ public class UserService {
         }
         return sendedRequests;
     }
+
+    public List<GetUserDto> seeReceivedRequests(String clientUsername) {
+        Set<User> requestSender = getUserByUsername(clientUsername).getRequestSender();
+        List<GetUserDto> receivedRequests = new ArrayList<>();
+        for (User user: requestSender) {
+            receivedRequests.add(UserMapper.INSTANCE.UserToGetUserDto(user));
+        }
+        return receivedRequests;
+    }
 }
