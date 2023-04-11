@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -102,5 +103,14 @@ public class UserService {
         clientUser.sendRequest(targetUser);
         saveOrUpdate(clientUser);
         saveOrUpdate(targetUser);
+    }
+
+    public List<GetUserDto> seeSendedRequests(String clientUsername) {
+        Set<User> requestReceiver = getUserByUsername(clientUsername).getRequestReceiver();
+        List<GetUserDto> sendedRequests = new ArrayList<>();
+        for (User user: requestReceiver) {
+            sendedRequests.add(UserMapper.INSTANCE.UserToGetUserDto(user));
+        }
+        return sendedRequests;
     }
 }

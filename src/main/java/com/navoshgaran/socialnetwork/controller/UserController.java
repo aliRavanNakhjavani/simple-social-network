@@ -37,14 +37,13 @@ public class UserController {
         return userService.searchByUsername(searchString);
     }
 
-//    @GetMapping("/search-username/{searchString}")
-//    public List<GetUserDto> searchByUsername(@PathVariable String searchString){
-//        return userService.searchByUsername(searchString);
-//    }
-
     @PostMapping("/send-request")
     public void sendRequest(@RequestBody RequestDto sendRequestDto){
         userService.sendRequest(sendRequestDto.getClientUsername(), sendRequestDto.getTargetUsername());
+    }
 
+    @GetMapping("/see-sended-requests/{clientUsername}")
+    public List<GetUserDto> seeSendedRequests(@PathVariable String clientUsername){
+        return userService.seeSendedRequests(clientUsername);
     }
 }
