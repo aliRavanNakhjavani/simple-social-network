@@ -42,6 +42,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(httpStatus).body(exception);
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    private ResponseEntity<ExceptionDto> notFoundException(NotFoundException e) {
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+        ExceptionDto exception = ExceptionDto.builder()
+                .timeStamp(LocalDateTime.now().toString())
+                .status(httpStatus.value())
+                .error(httpStatus.name())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(httpStatus).body(exception);
+    }
+
 
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
